@@ -1,5 +1,6 @@
 package ru.akiboba.spring_in_action.web;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Order_API")
 @Slf4j
 @Controller
 @RequestMapping("/design")
