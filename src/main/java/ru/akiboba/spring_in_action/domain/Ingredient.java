@@ -1,21 +1,35 @@
 package ru.akiboba.spring_in_action.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Класс содержит поля идентифицирующие характеристики ингредиентов
  */
-@Data
+@Getter
+@Setter
+@Entity
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "ingredients")
 public class Ingredient {
 
-    private final String id;
-    private final String name;
-    private final Type type;
+    @Id
+    private String id;
 
-    public enum Type {
-        WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
+    private String name;
+
+    public Ingredient(String id, String name, IngredientType type) {
+        this.id = id;
+        this.name = name;
     }
 
+    public Ingredient(String id) {
+        this.id = id;
+    }
 }
