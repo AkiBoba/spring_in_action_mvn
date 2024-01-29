@@ -21,3 +21,5 @@
    - Работа с БД
    - Liquibase
    - JPA
+\nКоммит 7
+   - Включение Spring Security
