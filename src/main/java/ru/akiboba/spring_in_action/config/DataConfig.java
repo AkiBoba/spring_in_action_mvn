@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 public class DataConfig {
 
     @Bean
-    public DataSource datasource(@Value("${jdbc.driver}") String driver, @Value("${jdbc.url}") String url, @Value("${jdbc.username}") String username, @Value("${jdbc.password}") String password) {
+    public DataSource datasource(@Value("${spring.datasource.driver}") String driver, @Value("${spring.datasource.url}") String url, @Value("${spring.datasource.username}") String username, @Value("${spring.datasource.password}") String password) {
         BasicDataSource datasource = new BasicDataSource();
         datasource.setDriverClassName(driver);
         datasource.setUrl(url);
