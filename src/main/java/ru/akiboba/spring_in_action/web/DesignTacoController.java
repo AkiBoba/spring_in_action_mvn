@@ -1,5 +1,6 @@
 package ru.akiboba.spring_in_action.web;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import ru.akiboba.spring_in_action.domain.Taco;
 import ru.akiboba.spring_in_action.domain.TacoOrder;
 import ru.akiboba.spring_in_action.repository.IngredientTypeRepository;
 
-@Tag(name = "Order_API")
+@Tag(name = "Design_API")
 @Slf4j
 @Controller
 @AllArgsConstructor
@@ -26,11 +27,13 @@ public class DesignTacoController {
      * Этот метод используется для добавления в модель атрибутов со значениями ингредиентов
      * @param model контейнер в котором будут сохранены аргументы для отправки их веб-представлению.
      */
+    @Operation
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
         model.addAttribute("types", typeRepository.findAll());
     }
 
+    @Operation
     @ModelAttribute(name = "tacoOrder")
     public TacoOrder order() {
         return new TacoOrder();
@@ -46,11 +49,13 @@ public class DesignTacoController {
         return new Ingredient();
     }
 
+    @Operation
     @GetMapping
     public String showDesignForm() {
         return "design";
     }
 
+    @Operation
     @PostMapping
     public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder) {
         if (errors.hasErrors()) {
