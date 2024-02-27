@@ -58,6 +58,7 @@ public class TacoOrder {
     private List<Taco> tacos = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public void addTaco(Taco taco) {
