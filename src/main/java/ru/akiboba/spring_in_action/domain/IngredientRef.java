@@ -1,6 +1,7 @@
 package ru.akiboba.spring_in_action.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tacos_ref_ingredients")
 public class IngredientRef {

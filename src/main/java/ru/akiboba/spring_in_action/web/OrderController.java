@@ -11,20 +11,18 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import ru.akiboba.spring_in_action.domain.IngredientRef;
+import ru.akiboba.spring_in_action.domain.*;
 import ru.akiboba.spring_in_action.props.OrderProps;
-import ru.akiboba.spring_in_action.domain.TacoOrder;
-import ru.akiboba.spring_in_action.domain.User;
 import ru.akiboba.spring_in_action.repository.IngredientRefRepository;
+import ru.akiboba.spring_in_action.repository.IngredientsRepository;
 import ru.akiboba.spring_in_action.repository.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Tag(name = "Order_API")
 @Slf4j
@@ -37,11 +35,33 @@ public class OrderController {
     private final OrderRepository orderRepository;
     private final IngredientRefRepository refRepository;
     private final OrderProps orderProps;
+    private final IngredientsRepository ingredientsRepository;
 
     @Operation
     @GetMapping("/current")
     public String orderForm() {
         return "orderForm";
+    }
+
+    @Operation
+    @GetMapping("/{id}")
+    public String order(@PathVariable long id, Model model) {
+        Optional<TacoOrder> order = orderRepository.findById(id);
+        if (order.isPresent()) {
+            model.addAttribute("tacoOrder", order.get());
+        }
+        return "orders";
+    }
+
+    @Operation
+    @GetMapping("/taco/{id}")
+    public String taco(@PathVariable long id, Model model) {
+        List<String> ingredientsRef = refRepository.findAllByTaco(id).stream().map(IngredientRef::getIngredient).toList();
+        List<Ingredient> ingredients = ingredientsRepository.findAll().stream().filter(ingredient -> ingredientsRef.contains(ingredient.getId())).collect(Collectors.toList());
+        if (!ingredients.isEmpty()) {
+            model.addAttribute("ingredients", ingredients);
+        }
+        return "ingredients";
     }
 
     @Operation
@@ -63,7 +83,7 @@ public class OrderController {
     public String ordersForUsers(@AuthenticationPrincipal User user, Model model) {
         Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
         model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
-        return "orderList";
+        return "ordersList";
     }
 
     private void saveIngredientsRef(TacoOrder order) {

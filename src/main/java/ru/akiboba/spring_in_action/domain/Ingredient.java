@@ -1,9 +1,6 @@
 package ru.akiboba.spring_in_action.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ingredients")
 public class Ingredient {
@@ -24,9 +20,14 @@ public class Ingredient {
 
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private IngredientType type;
+
     public Ingredient(String id, String name, IngredientType type) {
         this.id = id;
         this.name = name;
+        this.type = type;
     }
 
     public Ingredient(String id) {
